@@ -1,19 +1,21 @@
 class Tabu {
-    constructor(disciplina, laboratorio, qualidade) {
+    static quantidade = 10;
+    constructor(disciplina, laboratorio) {
         this.disciplina = disciplina;
         this.laboratorio = laboratorio;
-        this.qualidade = qualidade;
     }
 }
 
-Array.prototype.adicionarConfigTabu = adicionarConfigTabu;
-function adicionarConfigTabu(tabuCandidato) {
+Array.prototype.adicionarConfigTabu = function(tabuCandidato) {
     for(let tabu of this) {
         if(tabu.disciplina == tabuCandidato.disciplina 
         && tabu.laboratorio == tabuCandidato.laboratorio) {
-            
+            return;
         }
     }
+    this.unshift(novoTabu);
+    if(this.length > Tabu.quantidade)
+        this.pop();
 }
 
 function buscaTabu(instancia) {
