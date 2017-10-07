@@ -1,3 +1,26 @@
+Array.prototype.separarEmIntervalo = function(intervalo) {
+    let separados = [];
+    let grupo = [];
+    for(let i = 0; i < this.length; i++) {
+        grupo.push(this[i]);
+        if(grupo.length == intervalo) {
+			separados.push(grupo);
+			grupo = [];
+		}
+	}
+	if(grupo.length)
+		separados.push(grupo);
+    return separados;
+}
+
+Object.prototype.copy = function() {
+	return Object.assign({}, this);
+}
+
+Array.prototype.copy = function() {
+	return Object.assign([], this);
+}
+
 function obterRecursosAtendidos(recursosDis, recursosLab) {
 	var recursosAtendidos = 0;
 	for(let a of recursosDis) {

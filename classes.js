@@ -15,11 +15,12 @@ class Laboratorio {
 }
 
 class Instancia {
-	constructor(disciplinas, laboratorios, pesoRecurso = 2, pesoAlunos = 1) {
+	constructor(disciplinas, laboratorios, aulasPorDia, pesoRecurso = 2, pesoAlunos = 1) {
 		this.disciplinas = disciplinas;
 		this.laboratorios = laboratorios;
 		this.pesoRecurso = pesoRecurso;
 		this.pesoAlunos = pesoAlunos;
+		this.aulasPorDia = aulasPorDia || laboratorios.length;
 	}
 }
 
