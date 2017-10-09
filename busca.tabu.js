@@ -46,7 +46,7 @@ function buscaTabu(instancia, solucao, maxIt = 500) {
                 
                 // verificar se atende as restrições de configurações tabu
 
-                // recalcular qualidade de acordo com a troca (decrementar antes de trocar?)
+                // recalcular qualidade de acordo com a troca (para facilitar: decrementar antes de trocar?)
 
                 // selecionando configuracao candidata à tabu
                 if(alocacao.qualidade < menorQualidade) {
