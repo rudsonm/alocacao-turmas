@@ -21,6 +21,10 @@ Array.prototype.copy = function() {
 	return Object.assign([], this);
 }
 
+function Swap(a, b) {
+	[a, b] = [b, a];
+}
+
 function obterRecursosAtendidos(recursosDis, recursosLab) {
 	var recursosAtendidos = 0;
 	for(let a of recursosDis) {

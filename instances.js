@@ -18,4 +18,6 @@ var laboratorios = [
 var instancia = new Instancia(disciplinas, laboratorios, 2, 1, 2);
 
 var solucao = buscaConstrutiva(instancia);
-console.log(solucao.alocacao.separarEmIntervalo(instancia.aulasPorDia));
+console.log(solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia));
+solucao.alocacoes = solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia);
+buscaTabu(instancia, solucao);

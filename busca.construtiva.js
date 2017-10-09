@@ -1,5 +1,5 @@
 function buscaConstrutiva(instancia) {
-	var disciplinasNaoAlocadas = instancia.disciplinas;
+	var disciplinasNaoAlocadas = instancia.disciplinas.copy();
 	var pRecurso = instancia.pesoRecurso;
 	var pAluno = instancia.pesoAlunos;
 	var aulasPorDia = Math.abs(instancia.laboratorios.length - instancia.aulasPorDia);
@@ -19,12 +19,12 @@ function buscaConstrutiva(instancia) {
 
 		// adiciona valor da alocação para o total da solução
 		solucao.qualidade += qualidade;
-		solucao.alocacao.push(qualidade.toString().concat(" ", disciplina.nome, " => ", laboratorio.nome));
-		// solucao.alocacao.push({
-		// 	disciplina: instancia.disciplinas.indexOf(disciplina),
-		// 	laboratorio: instancia.laboratorios.indexOf(laboratorio), 
-		// 	qualidade: qualidade
-		// });
+		// solucao.alocacao.push(qualidade.toString().concat(" ", disciplina.nome, " => ", laboratorio.nome));
+		solucao.alocacoes.push({
+			disciplina: instancia.disciplinas.indexOf(disciplina),
+			laboratorio: instancia.laboratorios.indexOf(laboratorio), 
+			qualidade: qualidade
+		});
 	} while(disciplinasNaoAlocadas.length > 0);
 	return solucao;
 }

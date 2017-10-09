@@ -27,6 +27,6 @@ class Instancia {
 class Solucao {
 	constructor() {
 		this.qualidade = 0;
-		this.alocacao = [];
+		this.alocacoes = [];
 	}
 }
