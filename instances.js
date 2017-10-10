@@ -1,26 +1,42 @@
+var recursos = [
+	'Portugol Studio', // 0
+	'Code Blocks', // 1
+	'NetBeans', // 2
+	'Postgres', // 3
+	'Enterprise Architect', // 4
+	'MatLab', // 5
+	'JFlap', // 6
+	'Gals' // 7
+];
+
 var disciplinas = [
-	new Disciplina(13, [0, 1], 'Algoritmos e Programacao'),
-	new Disciplina(16, [1], 'Banco de Dados I'),
-	new Disciplina(12, [0, 1, 2], 'Simulacao Discreta de Sistemas'),
+	new Disciplina(13, [0], 'Algoritmos e Programacao I'),
+	new Disciplina(13, [1], 'Algoritmos e Programacao II'),
+	new Disciplina(16, [3], 'Banco de Dados I'),
+	new Disciplina(16, [3], 'Banco de Dados II'),
+	new Disciplina(12, [], 'Simulacao Discreta de Sistemas'),
 	new Disciplina(15, [], 'Complexidade de Algoritmos'),
-	new Disciplina(20, [0, 1, 2], 'Inteligencia Artificial'),
-	new Disciplina(21, [], 'Redes e Sistemas de Computadores'),
-	new Disciplina(9, [1, 2], 'Sistemas Operacionais')
+	new Disciplina(15, [2, 6, 7], 'Automatos e Linguagens Formais'),
+	new Disciplina(20, [0, 1, 2], 'Inteligencia Artificial I'),
+	new Disciplina(20, [0, 1, 2, 3], 'Inteligencia Artificial II'),
+	new Disciplina(21, [5], 'Redes e Sistemas de Computadores I'),
+	new Disciplina(21, [5], 'Redes e Sistemas de Computadores II'),
+	new Disciplina(9, [1, 5], 'Sistemas Operacionais')
 ];
 
 var laboratorios = [
-	new Laboratorio(23, [1], 'Lab 1'),
-	new Laboratorio(18, [0, 2], 'Lab 2'),
-	new Laboratorio(13, [], 'Lab 3'),
-	new Laboratorio(9, [0, 1], 'Lab 4')
+	new Laboratorio(9, [0, 1, 2, 3, 4], 'Lab 1'),
+	new Laboratorio(18, [2, 3, 4], 'Lab 2'),
+	new Laboratorio(13, [5, 6, 7], 'Lab 3'),
+	new Laboratorio(21, [], 'Lab 4')
 ];
 
-// parametros: disciplinas, laboratórios, número de aulas por dia, peso de recurso, peso de alunos
-var instancia = new Instancia(disciplinas, laboratorios, 4, 1, 2);
+// parametros: disciplinas, laboratórios, número de aulas por semana, peso de recurso, peso de alunos
+var instancia = new Instancia(disciplinas, laboratorios, 3, 2, 1);
 
 var solucao = buscaConstrutiva(instancia);
 // console.log(solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia));
 // solucao.alocacoes = solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia);
 // buscaTabu(instancia, solucao);
 
-console.log(solucao);
+console.log(solucao.alocacoes.sort((a,b) => a-b));

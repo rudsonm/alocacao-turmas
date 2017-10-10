@@ -5,41 +5,30 @@ function buscaConstrutiva(instancia) {
 function buscaConstrutiva(instancia) {
 	var disciplinasNaoAlocadas = instancia.disciplinas.copy();
 	disciplinasNaoAlocadas.sort((a,b) => a.recursos.length - b.recursos.length);
-	var pRecurso = instancia.pesoRecurso;
-	var pAluno = instancia.pesoAlunos;
-	var aulasPorDia = Math.abs(instancia.laboratorios.length - instancia.aulasPorDia);
-	// vetor onde as chaves representam as disciplinas e os valores os laboratórios onde cada disciplina será alocada
-	var solucao = new Solucao();
-	var laboratorios = instancia.laboratorios.copy();	
-	var laboratoriosAlocados = 0;
 
-	// começando pelo primeiro dia
-	solucao.alocacoes.push([]);
-	var dia = 0;
-	do {		
+	var pesoRecurso = instancia.pesoRecurso;
+	var pesoAluno = instancia.pesoAlunos;
+	var aulasPorDia = Math.abs(instancia.laboratorios.length - instancia.aulasPorDia);
+
+	var solucao = new Solucao(instancia.disciplinas.length, instancia.laboratorios.length);
+
+	var laboratorios = instancia.laboratorios.copy();
+	do {
 		// seleciona melhor laboratório
 		let disciplina = disciplinasNaoAlocadas.shift();
-		let laboratorio = obterLaboratorioComRecurso(disciplina, laboratorios, pRecurso, pAluno);
-		let qualidade = obterValorAvaliacao(laboratorio, disciplina, pRecurso, pAluno);						
+		let laboratorio = obterLaboratorioComRecurso(disciplina, laboratorios, pesoRecurso, pesoAluno);
+		let qualidadeAlocacao = obterValorAvaliacao(laboratorio, disciplina, pesoRecurso, pesoAluno);
+		
+		let indexLab = instancia.laboratorios.indexOf(laboratorio);
 
-		// solucao.alocacao.push(qualidade.toString().concat(" ", disciplina.nome, " => ", laboratorio.nome));
-		solucao.alocacoes[dia].push({
-			disciplina: instancia.disciplinas.indexOf(disciplina),
-			laboratorio: instancia.laboratorios.indexOf(laboratorio), 
-			qualidade: qualidade
-		});
+		solucao.alocacoes[instancia.disciplinas.indexOf(disciplina)] = laboratorio.nome.concat(" => ", qualidadeAlocacao, " => ", disciplina.nome);
+		// solucao.alocacoes[instancia.disciplinas.indexOf(disciplina)] = indexLab;
 
-		solucao.qualidade += qualidade;
-		laboratoriosAlocados++;
-
-		// avança de dia caso não sobre laboratórios ou as aulas foram preenchidas
-		laboratorios.splice(laboratorios.indexOf(laboratorio), 1);
-		if(!laboratorios.length || laboratoriosAlocados == aulasPorDia) {
-			laboratoriosAlocados = 0;
-			laboratorios = Object.assign([], instancia.laboratorios);			
-			solucao.alocacoes.push([]);			
-			dia++;
+		solucao.usoLaboratorios[indexLab]++;
+		if(solucao.usoLaboratorios[indexLab] >= instancia.aulasPorSemana) {
+			laboratorios.splice(laboratorios.indexOf(laboratorio), 1);
 		}
+		solucao.qualidade += qualidadeAlocacao;
 	} while(disciplinasNaoAlocadas.length > 0);
 	return solucao;
 }

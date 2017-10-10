@@ -40,13 +40,7 @@ function buscaTabu(instancia, solucao, maxIt = 500) {
         // possíveis estratégias:
         // para cada disciplina ja alocada, trocar de laboratório com as outras disciplinas?
         // para cada laboratório selecionar a disciplina que melhor se encaixa?
-        for(let dia = 0; dia < solucao.alocacoes.length; dia++) {
-            let alocacoesDia = solucao.alocacoes[dia];
-            // todas as aulas ocorrem em paralelo
-            for(let aula = dia + 1; aula < alocacoesDia.length; aula++) { // i + 1 para não occorrer trocas iguais
-                let alocacao = alocacoesDia[j];
-                let vizinho = solucao.copy();
-                
+        
                 // trocar as disciplinas de laboratório => i para j
                 Swap();
                 
@@ -55,12 +49,7 @@ function buscaTabu(instancia, solucao, maxIt = 500) {
                 // recalcular qualidade de acordo com a troca (para facilitar: decrementar antes de trocar?)
 
                 // selecionando configuracao candidata à tabu
-                if(alocacao.qualidade < menorQualidade) {
-                    menorQualidade = alocacao.qualidade;
-                    novoTabu = new Tabu(alocacao.disciplina, alocacao.laboratorio);
-                }
-            }
-        }
+                
         tabus.adicionarConfigTabu(novoTabu);
     } while(++it < maxIt);
 	return solucao;
