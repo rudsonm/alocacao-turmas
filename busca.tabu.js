@@ -37,11 +37,17 @@ function buscaTabu(instancia, solucao, maxIt = 500) {
     do {        
         let menorQualidade = Infinity;
         let novoTabu;
-        for(let i = 0; i < solucao.alocacoes.length; i++) {
-            let alocacoes = solucao.alocacoes[i];
-            for(let j = i + 1; j < alocacoes.length; j++) { // i + 1 para não occorrer trocas iguais
-                let alocacao = alocacoes[j];
-                // trocar as disciplinas i para j
+        // possíveis estratégias:
+        // para cada disciplina ja alocada, trocar de laboratório com as outras disciplinas?
+        // para cada laboratório selecionar a disciplina que melhor se encaixa?
+        for(let dia = 0; dia < solucao.alocacoes.length; dia++) {
+            let alocacoesDia = solucao.alocacoes[dia];
+            // todas as aulas ocorrem em paralelo
+            for(let aula = dia + 1; aula < alocacoesDia.length; aula++) { // i + 1 para não occorrer trocas iguais
+                let alocacao = alocacoesDia[j];
+                let vizinho = solucao.copy();
+                
+                // trocar as disciplinas de laboratório => i para j
                 Swap();
                 
                 // verificar se atende as restrições de configurações tabu

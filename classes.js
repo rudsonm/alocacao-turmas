@@ -1,5 +1,5 @@
 class Disciplina {
-	constructor(alunos, recursos, nome) {
+	constructor(alunos, recursos = [], nome = null) {
 		this.nome = nome;
 		this.alunos = alunos;
 		this.recursos = recursos;
@@ -7,7 +7,7 @@ class Disciplina {
 }
 
 class Laboratorio {
-	constructor(alunos, recursos, nome) {
+	constructor(alunos, recursos = [], nome = null) {
 		this.nome = nome;
 		this.alunos = alunos;
 		this.recursos = recursos;

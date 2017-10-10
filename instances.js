@@ -15,9 +15,12 @@ var laboratorios = [
 	new Laboratorio(9, [0, 1], 'Lab 4')
 ];
 
-var instancia = new Instancia(disciplinas, laboratorios, 2, 1, 2);
+// parametros: disciplinas, laboratórios, número de aulas por dia, peso de recurso, peso de alunos
+var instancia = new Instancia(disciplinas, laboratorios, 4, 1, 2);
 
 var solucao = buscaConstrutiva(instancia);
-console.log(solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia));
-solucao.alocacoes = solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia);
-buscaTabu(instancia, solucao);
+// console.log(solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia));
+// solucao.alocacoes = solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia);
+// buscaTabu(instancia, solucao);
+
+console.log(solucao);
