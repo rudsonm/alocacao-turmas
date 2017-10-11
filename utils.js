@@ -13,10 +13,6 @@ Array.prototype.separarEmIntervalo = function(intervalo) {
     return separados;
 }
 
-Object.prototype.copy = function() {
-	return Object.assign( Object.create( Object.getPrototypeOf(this)), this);
-}
-
 Array.prototype.copy = function() {
 	return Object.assign([], this);
 }

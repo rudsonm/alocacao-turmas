@@ -93,7 +93,7 @@ function buscaTabu(instancia, solucao, maxIt = 16) {
                     melhorSolucao = clonarSolucao(solucaoVizinha);
             }
         }
-        solucaoAtual = proximaSolucao.copy();
+        solucaoAtual = clonarSolucao(proximaSolucao);
         tabus.adicionarConfigTabu(novoTabu);
     } while(it++ < maxIt);
 	return melhorSolucao;

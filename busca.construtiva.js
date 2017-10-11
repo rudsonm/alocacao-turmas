@@ -1,10 +1,7 @@
-function buscaConstrutiva(instancia) {	
-	
-}
-
 function buscaConstrutiva(instancia) {
 	var disciplinasNaoAlocadas = instancia.disciplinas.copy();
 	disciplinasNaoAlocadas.sort((a,b) => b.recursos.length - a.recursos.length);
+	
 	var pesoRecurso = instancia.pesoRecurso;
 	var pesoAluno = instancia.pesoAlunos;
 	var aulasPorDia = Math.abs(instancia.laboratorios.length - instancia.aulasPorDia);
