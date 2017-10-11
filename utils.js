@@ -14,7 +14,7 @@ Array.prototype.separarEmIntervalo = function(intervalo) {
 }
 
 Object.prototype.copy = function() {
-	return Object.assign({}, this);
+	return Object.assign( Object.create( Object.getPrototypeOf(this)), this);
 }
 
 Array.prototype.copy = function() {
@@ -27,12 +27,10 @@ function Swap(a, b) {
 
 function obterRecursosAtendidos(recursosDis, recursosLab) {
 	var recursosAtendidos = 0;
-	for(let a of recursosDis) {
-		for(let b of recursosLab) {
+	for(let a of recursosDis)
+		for(let b of recursosLab)
 			if(a == b)
 				recursosAtendidos++;
-		}
-	}
 	return recursosAtendidos;
 }
 
@@ -55,4 +53,14 @@ function obterLaboratorioComRecurso(disciplina, laboratorios, pesoRecurso, pesoA
 		}
 	}
 	return melhorLaboratorio;
+}
+
+function obterQualidadeSolucao(alocacoes, instancia) {
+	let qualidade = 0;
+	for(let i = 0; i < alocacoes.length; i++) {
+		let laboratorio = instancia.laboratorios[alocacoes[i]];
+		let disciplina = instancia.disciplinas[i];
+		qualidade += obterValorAvaliacao(laboratorio, disciplina, instancia.pesoRecurso, instancia.pesoAlunos);
+	}
+	return qualidade;
 }

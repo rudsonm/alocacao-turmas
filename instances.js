@@ -6,7 +6,8 @@ var recursos = [
 	'Enterprise Architect', // 4
 	'MatLab', // 5
 	'JFlap', // 6
-	'Gals' // 7
+	'Gals', // 7
+	'Corel Draw' // 8
 ];
 
 var disciplinas = [
@@ -25,18 +26,18 @@ var disciplinas = [
 ];
 
 var laboratorios = [
-	new Laboratorio(9, [0, 1, 2, 3, 4], 'Lab 1'),
+	new Laboratorio(9, [0, 4, 7], 'Lab 1'),
 	new Laboratorio(18, [2, 3, 4], 'Lab 2'),
-	new Laboratorio(13, [5, 6, 7], 'Lab 3'),
-	new Laboratorio(21, [], 'Lab 4')
+	new Laboratorio(13, [5, 6], 'Lab 3'),
+	new Laboratorio(21, [], 'Lab 4'),
+	new Laboratorio(15, [0, 1, 4], 'Lab 5')
 ];
 
 // parametros: disciplinas, laboratórios, número de aulas por semana, peso de recurso, peso de alunos
-var instancia = new Instancia(disciplinas, laboratorios, 3, 2, 1);
-
+var instancia = new Instancia(disciplinas, laboratorios, 5, 2, 1);
 var solucao = buscaConstrutiva(instancia);
-// console.log(solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia));
-// solucao.alocacoes = solucao.alocacoes.separarEmIntervalo(instancia.aulasPorDia);
-// buscaTabu(instancia, solucao);
+console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify(solucao.usoLaboratorios));
+var solucaoTabu = buscaTabu(instancia, solucao);
+console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));
+//console.log(obterQualidadeSolucao(solucaoTabu.alocacoes, instancia));
 
-console.log(solucao.alocacoes.sort((a,b) => a-b));
