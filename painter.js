@@ -6,44 +6,77 @@ var solucaoTabu = buscaTabu(instancia, solucao);
 console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));
 //console.log(obterQualidadeSolucao(solucaoTabu.alocacoes, instancia));
 
+function obterTamanhoRetangulo(alunos) {
+	return alunos * 5;
+}
+
+function escrever(texto, x, y, fontSize = 25) {
+	this.painel.fillStyle = "black";
+	this.painel.font = 25 + 'px serif';	
+	this.painel.fillText(texto, x, y - 3);
+}
+
 function criarLaboratorio(laboratorio) {
-    let x = this.laboratorios * this.espacoLaboratorio;
-    x += Math.abs(this.espacoLaboratorio - laboratorio.alunos) / 2;
+	let tamanhoRetangulo = this.obterTamanhoRetangulo(laboratorio.alunos);
+    let x = this.laboratorios.length * this.espacoLaboratorio;
+    x += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
     let y = this.yLaboratorio;
 
-    let height = laboratorio.alunos;
-    let width = laboratorio.alunos;
+    let height = tamanhoRetangulo;
+    let width = tamanhoRetangulo;
 
     this.painel.fillStyle = this.corLaboratorio;
-    this.painel.fillRect(x, y, width, height);
-    this.laboratorios++;
+    this.painel.fillRect(x, y, width, height);	
+	
+	this.escrever(laboratorio.nome, x, y, 4);
+	
+    this.laboratorios.push(laboratorio.alunos);
 }
 
 function criarDisciplina(disciplina) {
-    let x = this.disciplinas * this.espacoDisciplina;
-    //x *= Math.floor(this.totalDisciplinas / this.maximoDisciplinaPorLinha);
-    x += Math.abs(this.espacoDisciplina - disciplina.alunos) / 2;
+	let tamanhoRetangulo = this.obterTamanhoRetangulo(disciplina.alunos);
+    let x = (this.disciplinas % this.maximoDisciplinaPorLinha) * this.espacoDisciplina;	
+    x += Math.abs(this.espacoDisciplina - tamanhoRetangulo) / 2;
+	
     let y = this.yDisciplina;
+	y += this.espacoDisciplina * Math.floor(this.disciplinas / this.maximoDisciplinaPorLinha);
+	
 
-    let height = disciplina.alunos;
-    let width = disciplina.alunos;
+    let height = tamanhoRetangulo;
+    let width = tamanhoRetangulo;
 
     this.painel.fillStyle = this.corDisciplina;
     this.painel.fillRect(x, y, width, height);
+	
     this.disciplinas++;
+}
+
+function obterPosicaoLaboratorio(indice) {
+	return {
+		x: indice * this.espacoLaboratorio,
+		y: this.yLaboratorio
+	};
+}
+
+function desenharSolucao(solucao) {
+	for(let disciplina = 0; disciplina < solucao.length; disciplina++) {
+		laboratorio = solucao[disciplina];
+	}
 }
 
 class Canvas {
     constructor(canvasId, disciplinas, laboratorios) {
         // Selecionando painel canvas
         this.elemento = document.getElementById(canvasId);
+		this.elemento.setAttribute('height', window.innerHeight * 0.97);
+		this.elemento.setAttribute('width', window.innerWidth * 0.985);
         this.painel = this.elemento.getContext('2d');
 
         // Configuração para laboratório
-        this.laboratorios = 0;
+        this.laboratorios = [];
         this.totalLaboratorios = (typeof(laboratorios) == 'object') ? laboratorios.length : laboratorios;
         this.espacoLaboratorio = this.elemento.width / this.totalLaboratorios;
-        this.yLaboratorio = 120;        
+        this.yLaboratorio = 625;        
         this.corLaboratorio = "blue";
 
         // Configuração para disciplina
@@ -55,8 +88,10 @@ class Canvas {
         this.corDisciplina = "red";
 
         // Definindo funções
+		this.escrever = escrever;
         this.criarDisciplina = criarDisciplina;
-        this.criarLaboratorio = criarLaboratorio;        
+        this.criarLaboratorio = criarLaboratorio;
+		this.obterTamanhoRetangulo = obterTamanhoRetangulo;
     }
 }
 
