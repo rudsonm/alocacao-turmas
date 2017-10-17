@@ -29,3 +29,4 @@ function buscaConstrutiva(instancia) {
 	return solucao;
 }
 // realocar laboratorios já alocados anteriormente
+// implementar busca monótona random walk

@@ -10,6 +10,7 @@ var recursos = [
 	'Corel Draw' // 8
 ];
 
+// alunos, recursos, nome
 var disciplinas = [
 	new Disciplina(13, [0], 'Algoritmos e Programacao I'),
 	new Disciplina(13, [1], 'Algoritmos e Programacao II'),
@@ -25,6 +26,7 @@ var disciplinas = [
 	new Disciplina(9, [1, 5], 'Sistemas Operacionais')
 ];
 
+// capacidade, recursos, nome
 var laboratorios = [
 	new Laboratorio(9, [0, 4, 7], 'Lab 1'),
 	new Laboratorio(18, [2, 3, 4], 'Lab 2'),
@@ -40,4 +42,3 @@ console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify
 var solucaoTabu = buscaTabu(instancia, solucao);
 console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));
 //console.log(obterQualidadeSolucao(solucaoTabu.alocacoes, instancia));
-
