@@ -1,31 +1,3 @@
-class Tabu {
-    static obterNumeroMaximoConfiguracoes() {
-        return 15;
-    }
-    constructor(disciplina, laboratorio) {
-        this.disciplina = disciplina;
-        this.laboratorio = laboratorio;
-    }
-}
-
-Array.prototype.jaExisteConfigTabu = function (t) {
-    for (let tabu of this)
-        if (tabu.disciplina === t.disciplina && tabu.laboratorio === t.laboratorio)
-            return true;
-    return false;
-}
-
-Array.prototype.adicionarConfigTabu = function (tabuCandidato) {
-    for (let tabu of this)
-        if (tabu.disciplina === tabuCandidato.disciplina && tabu.laboratorio === tabuCandidato.laboratorio)
-            return false;
-
-    this.unshift(tabuCandidato);
-    if (this.length > Tabu.obterNumeroMaximoConfiguracoes())
-        this.pop();
-    return true;
-}
-
 function clonarSolucao(solucao) {
     let nova = new Solucao();
     nova.alocacoes = solucao.alocacoes.copy();
@@ -35,6 +7,7 @@ function clonarSolucao(solucao) {
 }
 
 function buscaTabu(instancia, solucao, maxIt = 16, painter) {
+    let maximoConfigTabu = 15;
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
 
@@ -91,7 +64,7 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
         solucaoAtual = clonarSolucao(proximaSolucao);
 
         tabus.unshift(novoTabu);
-        if (tabus.length > Tabu.obterNumeroMaximoConfiguracoes())
+        if (tabus.length > maximoConfigTabu)
             tabus.pop();
 
         setInterval(function () {
