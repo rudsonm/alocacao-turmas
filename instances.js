@@ -90,8 +90,4 @@ var laboratorios = [
 
 // parametros: disciplinas, laboratórios, número de aulas por semana, peso de recurso, peso de alunos
 var instancia = new Instancia(disciplinas, laboratorios, 5, 2, 1);
-var solucao = buscaConstrutiva(instancia);
-console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify(solucao.usoLaboratorios));
-var solucaoTabu = buscaTabu(instancia, solucao);
-console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));
 //console.log(obterQualidadeSolucao(solucaoTabu.alocacoes, instancia));
