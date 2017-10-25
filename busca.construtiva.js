@@ -28,5 +28,3 @@ function buscaConstrutiva(instancia) {
 	} while(disciplinasNaoAlocadas.length > 0);
 	return solucao;
 }
-// realocar laboratorios já alocados anteriormente
-// implementar busca monótona random walk

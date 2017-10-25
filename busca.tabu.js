@@ -1,4 +1,5 @@
 function buscaTabu(instancia, solucao, maxIt = 16, painter) {
+    solucao = solucao || obterSolucaoAleatoria(instancia);
     let maximoConfigTabu = 5;
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
@@ -8,10 +9,11 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
 
     let tabus = [];
     let it = 0;
+    let interval = setInterval(function() {
+        painter.desenharSolucao(solucaoAtual.alocacoes);
+        painter.adicionarPonto(solucaoAtual.qualidade);
 
-    do {
         let proximaSolucao = { qualidade: Infinity };
-
         let menorQualidade = Infinity;
         let novoTabu;
         // possíveis estratégias:
@@ -60,6 +62,11 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
         if (tabus.length > maximoConfigTabu)
             tabus.pop();
 
-    } while (it++ < maxIt);
+        if(++it === maxIt) {
+            clearInterval(interval);
+            alert(melhorSolucao.qualidade);
+            return melhorSolucao;
+        }
+    }, 100);
     return melhorSolucao;
 }

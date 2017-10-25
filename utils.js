@@ -70,3 +70,21 @@ function clonarSolucao(solucao) {
     nova.qualidade = solucao.qualidade;
     return nova;
 }
+
+function obterSolucaoAleatoria(instancia) {
+    let solucao = new Solucao(instancia.disciplinas.length, instancia.laboratorios.length);
+    for(let i = 0; i < solucao.alocacoes.length; i++) {
+        let laboratorio;
+        do {
+            laboratorio = Math.round(Math.random() * (instancia.laboratorios.length - 1));
+        } while(solucao.usoLaboratorios[laboratorio] >= instancia.aulasPorSemana);
+        solucao.alocacoes[i] = laboratorio;
+        solucao.usoLaboratorios[laboratorio]++;
+        solucao.qualidade += obterValorAvaliacao(instancia.laboratorios[laboratorio], instancia.disciplinas[i], instancia.pesoAlunos, instancia.pesoRecurso);
+    }
+    return solucao;
+}
+
+function imprimirSolucao(solucao) {	
+	alert(solucao.qualidade + " " + JSON.stringify(solucao.alocacoes) + " " + JSON.stringify(solucao.usoLaboratorios));
+}

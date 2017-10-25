@@ -85,10 +85,12 @@ function alocarDisciplinaEmLaboratorio(disciplina, laboratorio) {
 }
 
 function obterPosicaoPonto(ponto, indice) {
-    (this.heightGrafico - 5) === this.min;
+    let max = this.max - this.min;
+    let med = ponto - this.min;
+    let proporcao = med / max;
     return {
-        x: this.xGrafico + 15 * (indice + 1),
-        y: this.yGrafico + this.heightGrafico - (ponto * (this.heightGrafico - 10)) / this.max
+        x: this.xGrafico + 15 * indice,
+        y: this.yGrafico + this.heightGrafico - 5 - ((this.heightGrafico - 10) * proporcao)
     }
 }
 
@@ -97,30 +99,27 @@ function desenharGrafico() {
     this.painel.fillRect(this.xGrafico, this.yGrafico, this.widthGrafico, this.heightGrafico);
     this.painel.strokeStyle = "black";
     this.painel.strokeRect(this.xGrafico, this.yGrafico, this.widthGrafico, this.heightGrafico);
-        
     for(let i = 1; i < this.pontos.length; i++) {
         let posicao = this.obterPosicaoPonto(this.pontos[i], i);
-        // this.painel.beginPath();
-        // this.painel.arc(posicao.x, posicao.y, 0.6, 0, 2 * Math.PI);
-        // this.painel.stroke();
 
-            this.painel.beginPath();
-            let posicaoAnterior = this.obterPosicaoPonto(this.pontos[i - 1], i - 1);            
-            this.painel.moveTo(posicaoAnterior.x, posicaoAnterior.y);
-            this.painel.lineTo(posicao.x, posicao.y);
+        this.painel.beginPath();
+        let posicaoAnterior = this.obterPosicaoPonto(this.pontos[i - 1], i - 1);            
+        this.painel.moveTo(posicaoAnterior.x, posicaoAnterior.y);
+        this.painel.lineTo(posicao.x, posicao.y);
 
-            let cor = (posicaoAnterior.y > posicao.y) ? "red" : "green";
-            this.painel.strokeStyle = cor;
-            this.painel.stroke();
+        let cor = (posicaoAnterior.y > posicao.y) ? "red" : "green";
+        this.painel.strokeStyle = cor;
+        this.painel.stroke();
     }
 }
 
 function adicionarPonto(ponto) {    
     this.pontos.push(ponto);
-    if(this.pontos.length > 47)
-        this.pontos.pop();
+    if(this.pontos.length > 41)
+        this.pontos.shift();
     this.min = this.pontos.reduce( (a, b) => Math.min(a, b) );
-    this.max = this.pontos.reduce( (a, b) => Math.max(a, b) );    
+    this.max = this.pontos.reduce( (a, b) => Math.max(a, b) );            
+
     this.desenharGrafico();
 }
 
@@ -165,7 +164,7 @@ class Canvas {
         this.xGrafico = this.elemento.width - (this.maximoLaboratorioPorLinha -1) * this.espacoLaboratorio;
         this.yGrafico = 10;
         this.widthGrafico = this.elemento.width - 10 - this.xGrafico;
-        this.heightGrafico = this.espacoLaboratorio * 1.8;
+        this.heightGrafico = this.espacoLaboratorio * 2;
         this.pontos = new Array();
         this.min = 0;
         this.max = Infinity;
@@ -186,16 +185,15 @@ class Canvas {
 
 var canvas = new Canvas('canvas', disciplinas, laboratorios);
 
-canvas.desenharGrafico([10, 50]);
-
 for(let disciplina of disciplinas)
     canvas.criarDisciplina(disciplina);
 
 for(let laboratorio of laboratorios)
     canvas.criarLaboratorio(laboratorio);
 
-var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
+
 // var solucao = buscaConstrutiva(instancia);
-// console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify(solucao.usoLaboratorios));
+
+var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
+
 // var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
-// console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));

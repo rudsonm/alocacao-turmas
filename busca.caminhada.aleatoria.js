@@ -1,17 +1,3 @@
-function obterSolucaoAleatoria(instancia) {
-    let solucao = new Solucao(instancia.disciplinas.length, instancia.laboratorios.length);
-    for(let i = 0; i < solucao.alocacoes.length; i++) {
-        let laboratorio;
-        do {
-            laboratorio = Math.round(Math.random() * (instancia.laboratorios.length - 1));
-        } while(solucao.usoLaboratorios[laboratorio] >= instancia.aulasPorSemana);
-        solucao.alocacoes[i] = laboratorio;
-        solucao.usoLaboratorios[laboratorio]++;
-        solucao.qualidade += obterValorAvaliacao(instancia.laboratorios[laboratorio], instancia.disciplinas[i], instancia.pesoAlunos, instancia.pesoRecurso);
-    }
-    return solucao;
-}
-
 function caminhadaAleatoria(instancia, solucao, painter, velocidade = 1) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
 
@@ -22,6 +8,7 @@ function caminhadaAleatoria(instancia, solucao, painter, velocidade = 1) {
     let interval = setInterval(function() {
         painter.desenharSolucao(solucao.alocacoes);
         painter.adicionarPonto(solucao.qualidade);
+        
         melhores = new Array();
         for(let i = 0; i < instancia.disciplinas.length; i++) {            
             for(let j = 0; j < instancia.laboratorios.length; j++) {
@@ -45,15 +32,18 @@ function caminhadaAleatoria(instancia, solucao, painter, velocidade = 1) {
                 let qualidade = obterValorAvaliacao(laboratorioNovo, disciplina, pesoRecurso, pesoAluno);
                 solucaoVizinha.qualidade += qualidade;
 
-                if(solucaoVizinha.qualidade < solucao.qualidade)
+                if(solucaoVizinha.qualidade < solucao.qualidade) {
+                    // painter.adicionarPonto(solucaoVizinha.qualidade);
                     melhores.push(solucaoVizinha);
+                }                    
             }
         }
         if(melhores.length) {
             let proximaSolucao = Math.round(Math.random() * (melhores.length - 1));
-            solucao = clonarSolucao(melhores[proximaSolucao]);            
+            solucao = clonarSolucao(melhores[proximaSolucao]);
         } else {
             clearInterval(interval);
+            imprimirSolucao(solucao);
             return solucao;
         }
     }, 500 * velocidade);
