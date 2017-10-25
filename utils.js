@@ -34,6 +34,8 @@ function obterValorAvaliacao(laboratorio, disciplina, pesoRecurso, pesoAlunos) {
 	let recursosAtendidos = obterRecursosAtendidos(disciplina.recursos, laboratorio.recursos);
 	let recursos = (disciplina.recursos.length - recursosAtendidos) * pesoRecurso;
 	let alunos = (laboratorio.alunos - disciplina.alunos) * pesoAlunos;
+	// penaliza quando faltar lugar
+	alunos *= (laboratorio.alunos < disciplina.alunos) ? 2 : 1;
 	return  (recursos + Math.abs(alunos)) / (pesoRecurso + pesoAlunos);
 }
 
@@ -59,4 +61,12 @@ function obterQualidadeSolucao(alocacoes, instancia) {
 		qualidade += obterValorAvaliacao(laboratorio, disciplina, instancia.pesoRecurso, instancia.pesoAlunos);
 	}
 	return qualidade;
+}
+
+function clonarSolucao(solucao) {
+    let nova = new Solucao();
+    nova.alocacoes = solucao.alocacoes.copy();
+    nova.usoLaboratorios = solucao.usoLaboratorios.copy();
+    nova.qualidade = solucao.qualidade;
+    return nova;
 }

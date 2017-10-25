@@ -34,7 +34,6 @@ function criarDisciplina(disciplina) {
     
     let y = this.yDisciplina;
 	y += this.espacoDisciplina * Math.floor(this.disciplinas.length / this.maximoDisciplinaPorLinha);
-    this.escrever("Alunos: ".concat(disciplina.alunos), x, y + 10, 15);
     y += Math.abs(this.espacoDisciplina - tamanhoRetangulo) / 2;    
 
     let height = tamanhoRetangulo;
@@ -54,20 +53,75 @@ function obterPosicaoDisciplina(indice) {
 	};
 }
 
-function desenharSolucao(solucao) {
+function desenharSolucao(solucao) {    
 	for(let disciplina = 0; disciplina < solucao.length; disciplina++) {
         let laboratorio = solucao[disciplina];
-        let cor = this.cores[laboratorio];
-
-        let tamanhoRetangulo = obterTamanhoRetangulo(this.laboratorios[laboratorio]);
-        let posicao = this.obterPosicaoDisciplina(disciplina);
-        posicao.x += Math.abs(this.espacoDisciplina - tamanhoRetangulo) / 2;
-        posicao.y += Math.abs(this.espacoDisciplina - tamanhoRetangulo) / 2;
-
-        this.painel.lineWidth = 2;
-        this.painel.strokeStyle = cor;        
-        this.painel.strokeRect(posicao.x, posicao.y, tamanhoRetangulo, tamanhoRetangulo);
+        this.alocarDisciplinaEmLaboratorio(disciplina, laboratorio);
 	}
+}
+
+function alocarDisciplinaEmLaboratorio(disciplina, laboratorio) {
+    let posicao = this.obterPosicaoDisciplina(disciplina);
+
+    // limpa espaco da disciplina
+    this.painel.fillStyle = "white";
+    this.painel.fillRect(posicao.x, posicao.y, this.espacoDisciplina, this.espacoDisciplina);
+    
+    // desenha disciplina
+    // this.escrever("Alunos: ".concat(this.disciplinas[disciplina]), posicao.x, posicao.y + 10, 15);
+    let tamanhoRetDisciplina = this.obterTamanhoRetangulo(this.disciplinas[disciplina]);
+    let x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
+    let y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
+    this.painel.fillStyle = this.corDisciplina;
+    this.painel.fillRect(x, y, tamanhoRetDisciplina, tamanhoRetDisciplina);
+
+    // desenha laboratório
+    let tamanhoRetLaboratorio = this.obterTamanhoRetangulo(this.laboratorios[laboratorio]);
+    x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
+    y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
+    this.painel.lineWidth = 2;
+    this.painel.strokeStyle = this.cores[laboratorio];
+    this.painel.strokeRect(x, y, tamanhoRetLaboratorio, tamanhoRetLaboratorio);
+}
+
+function obterPosicaoPonto(ponto, indice) {
+    (this.heightGrafico - 5) === this.min;
+    return {
+        x: this.xGrafico + 15 * (indice + 1),
+        y: this.yGrafico + this.heightGrafico - (ponto * (this.heightGrafico - 10)) / this.max
+    }
+}
+
+function desenharGrafico() {
+    this.painel.fillStyle = "white";
+    this.painel.fillRect(this.xGrafico, this.yGrafico, this.widthGrafico, this.heightGrafico);
+    this.painel.strokeStyle = "black";
+    this.painel.strokeRect(this.xGrafico, this.yGrafico, this.widthGrafico, this.heightGrafico);
+        
+    for(let i = 1; i < this.pontos.length; i++) {
+        let posicao = this.obterPosicaoPonto(this.pontos[i], i);
+        // this.painel.beginPath();
+        // this.painel.arc(posicao.x, posicao.y, 0.6, 0, 2 * Math.PI);
+        // this.painel.stroke();
+
+            this.painel.beginPath();
+            let posicaoAnterior = this.obterPosicaoPonto(this.pontos[i - 1], i - 1);            
+            this.painel.moveTo(posicaoAnterior.x, posicaoAnterior.y);
+            this.painel.lineTo(posicao.x, posicao.y);
+
+            let cor = (posicaoAnterior.y > posicao.y) ? "red" : "green";
+            this.painel.strokeStyle = cor;
+            this.painel.stroke();
+    }
+}
+
+function adicionarPonto(ponto) {    
+    this.pontos.push(ponto);
+    if(this.pontos.length > 47)
+        this.pontos.pop();
+    this.min = this.pontos.reduce( (a, b) => Math.min(a, b) );
+    this.max = this.pontos.reduce( (a, b) => Math.max(a, b) );    
+    this.desenharGrafico();
 }
 
 class Canvas {
@@ -107,6 +161,15 @@ class Canvas {
         this.yDisciplina = 290;
         this.corDisciplina = "#bdc3c7";
 
+        // Configuração para gráfico
+        this.xGrafico = this.elemento.width - (this.maximoLaboratorioPorLinha -1) * this.espacoLaboratorio;
+        this.yGrafico = 10;
+        this.widthGrafico = this.elemento.width - 10 - this.xGrafico;
+        this.heightGrafico = this.espacoLaboratorio * 1.8;
+        this.pontos = new Array();
+        this.min = 0;
+        this.max = Infinity;
+
         // Definindo funções
 		this.escrever = escrever;
         this.criarDisciplina = criarDisciplina;
@@ -114,10 +177,16 @@ class Canvas {
         this.obterTamanhoRetangulo = obterTamanhoRetangulo;
         this.obterPosicaoDisciplina = obterPosicaoDisciplina;
         this.desenharSolucao = desenharSolucao;
+        this.alocarDisciplinaEmLaboratorio = alocarDisciplinaEmLaboratorio;
+        this.obterPosicaoPonto = obterPosicaoPonto;
+        this.desenharGrafico = desenharGrafico;        
+        this.adicionarPonto = adicionarPonto;
     }
 }
 
 var canvas = new Canvas('canvas', disciplinas, laboratorios);
+
+canvas.desenharGrafico([10, 50]);
 
 for(let disciplina of disciplinas)
     canvas.criarDisciplina(disciplina);
@@ -125,9 +194,8 @@ for(let disciplina of disciplinas)
 for(let laboratorio of laboratorios)
     canvas.criarLaboratorio(laboratorio);
 
-var solucao = buscaConstrutiva(instancia);
-console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify(solucao.usoLaboratorios));
-var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
-console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));
-
-canvas.desenharSolucao(solucaoTabu.alocacoes);
+var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
+// var solucao = buscaConstrutiva(instancia);
+// console.log(solucao.qualidade, JSON.stringify(solucao.alocacoes), JSON.stringify(solucao.usoLaboratorios));
+// var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
+// console.log(solucaoTabu.qualidade, JSON.stringify(solucaoTabu.alocacoes), JSON.stringify(solucaoTabu.usoLaboratorios));

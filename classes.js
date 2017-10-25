@@ -27,9 +27,7 @@ class Instancia {
 class Solucao {
 	constructor(qtdDisciplinas, qtdLaboratorios) {
 		this.qualidade = 0;
-		this.alocacoes = Array(qtdDisciplinas);
-		this.usoLaboratorios = [];
-		for(let i = 0; i < qtdLaboratorios; i++)
-			this.usoLaboratorios.push(0);
+		this.alocacoes = new Array(qtdDisciplinas);
+		this.usoLaboratorios = new Array(qtdLaboratorios).fill(0);
 	}
 }

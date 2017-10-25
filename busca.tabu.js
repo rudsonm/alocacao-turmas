@@ -1,13 +1,5 @@
-function clonarSolucao(solucao) {
-    let nova = new Solucao();
-    nova.alocacoes = solucao.alocacoes.copy();
-    nova.usoLaboratorios = solucao.usoLaboratorios.copy();
-    nova.qualidade = solucao.qualidade;
-    return nova;
-}
-
 function buscaTabu(instancia, solucao, maxIt = 16, painter) {
-    let maximoConfigTabu = 15;
+    let maximoConfigTabu = 5;
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
 
@@ -16,6 +8,7 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
 
     let tabus = [];
     let it = 0;
+
     do {
         let proximaSolucao = { qualidade: Infinity };
 
@@ -32,7 +25,7 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
                     || j === solucaoAtual.alocacoes[i] // caso disciplina já esteja alocada no laboratório j
                     || solucaoAtual.usoLaboratorios[j] === instancia.aulasPorSemana) // laboratório ocupado todos os dias
                     continue;
-
+                
                 let solucaoVizinha = clonarSolucao(solucaoAtual);
 
                 // decrescenta valor de qualidade da alocação que irá sair
@@ -67,9 +60,6 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
         if (tabus.length > maximoConfigTabu)
             tabus.pop();
 
-        setInterval(function () {
-            painter.desenharSolucao(solucaoAtual.alocacoes);
-        }, 1000 * it);
     } while (it++ < maxIt);
     return melhorSolucao;
 }
