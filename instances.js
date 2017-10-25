@@ -88,6 +88,20 @@ var laboratorios = [
 	new Laboratorio(25, [0, 1, 4], 'Lab 11')
 ];
 
+// var laboratorios = [
+// 	new Laboratorio(35, [0, 4, 7], 'Lab 1'),
+// 	new Laboratorio(35, [2, 3, 4], 'Lab 2'),
+// 	new Laboratorio(35, [5, 6], 'Lab 3'),
+// 	new Laboratorio(35, [], 'Lab 4'),
+// 	new Laboratorio(35, [0, 1, 4], 'Lab 5'),
+// 	new Laboratorio(35, [0, 1, 4], 'Lab 6'),
+// 	new Laboratorio(35, [0, 1, 4], 'Lab 7'),
+// 	new Laboratorio(5, [0, 1, 4], 'Lab 8'),
+// 	new Laboratorio(5, [0, 1, 4], 'Lab 9'),
+// 	new Laboratorio(5, [0, 1, 4], 'Lab 10'),
+// 	new Laboratorio(5, [0, 1, 4], 'Lab 11'),
+// ];
+
 // parametros: disciplinas, laboratórios, número de aulas por semana, peso de recurso, peso de alunos
-var instancia = new Instancia(disciplinas, laboratorios, 5, 2, 1);
+var instancia = new Instancia(disciplinas, laboratorios, 3, 2, 1);
 //console.log(obterQualidadeSolucao(solucaoTabu.alocacoes, instancia));

@@ -1,0 +1,45 @@
+function buscaIterada(instancia, solucao, painter, taxaPerturbacao = 0.5, maxIt = 100) {
+    solucao = solucao || obterSolucaoAleatoria(instancia);
+    let solucaoAtual = clonarSolucao(solucao);
+    let it = 0;
+
+    let interval = setInterval(function() {
+        painter.desenharSolucao(solucaoAtual.alocacoes);
+        painter.adicionarPonto(solucaoAtual.qualidade);
+
+        let proximaSolucao = { qualidade: Infinity };        
+        for(let i = 0; i < instancia.disciplinas.length; i++) {
+            for(let j = 0; j < instancia.laboratorios.length; j++) {
+                if (j === solucao.alocacoes[i] || solucao.usoLaboratorios[j] === instancia.aulasPorSemana)
+                    continue;
+
+                let solucaoVizinha = obterSolucaoVizinha(instancia, solucao, i, j);
+                if(solucaoVizinha.qualidade < proximaSolucao.qualidade) {
+                    proximaSolucao = clonarSolucao(solucaoVizinha);                    
+                    if(solucaoVizinha.qualidade < solucao.qualidade) {
+                        solucao = clonarSolucao(solucaoVizinha);
+                    }
+                }
+            }
+        }
+
+        if(proximaSolucao.qualidade >= solucaoAtual.qualidade) {
+            let disciplinasPerturbadas = instancia.disciplinas.length * taxaPerturbacao;
+            for(let i = 0; i < disciplinasPerturbadas; i++) {
+                let disciplina = Math.round(Math.random() * (instancia.disciplinas.length - 1));
+                let laboratorio;
+                do {
+                    laboratorio = Math.round(Math.random() * (instancia.laboratorios.length - 1));
+                } while(proximaSolucao.usoLaboratorios[laboratorio] >= instancia.aulasPorSemana);
+                proximaSolucao = obterSolucaoVizinha(instancia, proximaSolucao, disciplina, laboratorio);
+            }            
+        }
+        solucaoAtual = clonarSolucao(proximaSolucao);
+        
+        if(it++ === maxIt) {
+            clearInterval(interval);
+            imprimirSolucao(solucao);
+            return solucao;
+        }
+    }, 250);
+}

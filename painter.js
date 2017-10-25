@@ -11,19 +11,23 @@ function escrever(texto, x, y, fontSize = 25) {
 function criarLaboratorio(laboratorio) {
 	let tamanhoRetangulo = this.obterTamanhoRetangulo(laboratorio.alunos);
     let x = (this.laboratorios.length % this.maximoLaboratorioPorLinha) * this.espacoLaboratorio;
-    x += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
+    // x += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
+    x += this.espacoLaboratorio / 2;
 
     let y = this.yLaboratorio;
     y += this.espacoLaboratorio * Math.floor(this.laboratorios.length / this.maximoLaboratorioPorLinha);
     this.escrever(laboratorio.nome, x, y + 10);
-    y += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
+    y += this.espacoLaboratorio / 2;
+    // y += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
 
     let height = tamanhoRetangulo;
     let width = tamanhoRetangulo;
-
+    
+    this.painel.beginPath();
+    this.painel.arc(x, y, tamanhoRetangulo / 2, 0, 2*Math.PI);    
     this.painel.fillStyle = this.cores[this.laboratorios.length];
-    this.painel.fillRect(x, y, width, height);	
-	
+    this.painel.fill();
+
     this.laboratorios.push(laboratorio.alunos);
 }
 
@@ -67,21 +71,36 @@ function alocarDisciplinaEmLaboratorio(disciplina, laboratorio) {
     this.painel.fillStyle = "white";
     this.painel.fillRect(posicao.x, posicao.y, this.espacoDisciplina, this.espacoDisciplina);
     
+    // desenha laboratório
+    let tamanhoRetLaboratorio = this.obterTamanhoRetangulo(this.laboratorios[laboratorio]);
+    // x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
+    // y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
+    // this.painel.lineWidth = 2;
+    // this.painel.strokeStyle = this.cores[laboratorio];
+    // this.painel.strokeRect(x, y, tamanhoRetLaboratorio, tamanhoRetLaboratorio);
+
+    let x = posicao.x + this.espacoDisciplina / 2;
+    let y = posicao.y + this.espacoDisciplina / 2;
+    this.painel.beginPath();
+    this.painel.arc(x, y, tamanhoRetLaboratorio / 2, 0, 2*Math.PI);    
+    this.painel.fillStyle = this.cores[laboratorio];
+    this.painel.fill();
+
     // desenha disciplina
     // this.escrever("Alunos: ".concat(this.disciplinas[disciplina]), posicao.x, posicao.y + 10, 15);
     let tamanhoRetDisciplina = this.obterTamanhoRetangulo(this.disciplinas[disciplina]);
-    let x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
-    let y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
-    this.painel.fillStyle = this.corDisciplina;
-    this.painel.fillRect(x, y, tamanhoRetDisciplina, tamanhoRetDisciplina);
-
-    // desenha laboratório
-    let tamanhoRetLaboratorio = this.obterTamanhoRetangulo(this.laboratorios[laboratorio]);
-    x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
-    y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetLaboratorio) / 2;
-    this.painel.lineWidth = 2;
-    this.painel.strokeStyle = this.cores[laboratorio];
-    this.painel.strokeRect(x, y, tamanhoRetLaboratorio, tamanhoRetLaboratorio);
+    // let x = posicao.x + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
+    // let y = posicao.y + Math.abs(this.espacoDisciplina - tamanhoRetDisciplina) / 2;
+    // this.painel.fillStyle = this.corDisciplina;
+    // this.painel.fillRect(x, y, tamanhoRetDisciplina, tamanhoRetDisciplina);
+    
+    x = posicao.x + this.espacoDisciplina / 2;
+    y = posicao.y + this.espacoDisciplina / 2;
+    this.painel.beginPath();
+    this.painel.arc(x, y, tamanhoRetDisciplina / 2, 0, 2*Math.PI);
+    this.painel.lineWidth = 3;
+    this.painel.strokeStyle = this.corDisciplina;
+    this.painel.stroke();    
 }
 
 function obterPosicaoPonto(ponto, indice) {
@@ -118,7 +137,8 @@ function adicionarPonto(ponto) {
     if(this.pontos.length > 41)
         this.pontos.shift();
     this.min = this.pontos.reduce( (a, b) => Math.min(a, b) );
-    this.max = this.pontos.reduce( (a, b) => Math.max(a, b) );            
+    let candidatoMax = this.pontos.reduce( (a, b) => Math.max(a, b) );
+    this.max = Math.max(this.max, candidatoMax);
 
     this.desenharGrafico();
 }
@@ -167,7 +187,7 @@ class Canvas {
         this.heightGrafico = this.espacoLaboratorio * 2;
         this.pontos = new Array();
         this.min = 0;
-        this.max = Infinity;
+        this.max = -Infinity;
 
         // Definindo funções
 		this.escrever = escrever;
@@ -192,8 +212,10 @@ for(let laboratorio of laboratorios)
     canvas.criarLaboratorio(laboratorio);
 
 
-// var solucao = buscaConstrutiva(instancia);
+var solucao = buscaConstrutiva(instancia);
+alert(solucao.qualidade);
+// var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
 
-var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
+// var solucaoIterada = buscaIterada(instancia, solucao, canvas);
 
-// var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
+var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);

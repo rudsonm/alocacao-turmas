@@ -32,10 +32,11 @@ function obterRecursosAtendidos(recursosDis, recursosLab) {
 
 function obterValorAvaliacao(laboratorio, disciplina, pesoRecurso, pesoAlunos) {
 	let recursosAtendidos = obterRecursosAtendidos(disciplina.recursos, laboratorio.recursos);
-	let recursos = (disciplina.recursos.length - recursosAtendidos) * pesoRecurso;
-	let alunos = (laboratorio.alunos - disciplina.alunos) * pesoAlunos;
-	// penaliza quando faltar lugar
-	alunos *= (laboratorio.alunos < disciplina.alunos) ? 2 : 1;
+	let recursos = pesoRecurso * (disciplina.recursos.length - recursosAtendidos);
+	let alunos = pesoAlunos * (laboratorio.alunos - disciplina.alunos);
+	// penaliza quando excede capacidade do laboratorio
+	if(disciplina.alunos > laboratorio.alunos)
+		alunos = Math.pow(alunos, 2);	
 	return  (recursos + Math.abs(alunos)) / (pesoRecurso + pesoAlunos);
 }
 
@@ -87,4 +88,23 @@ function obterSolucaoAleatoria(instancia) {
 
 function imprimirSolucao(solucao) {	
 	alert(solucao.qualidade + " " + JSON.stringify(solucao.alocacoes) + " " + JSON.stringify(solucao.usoLaboratorios));
+}
+
+function obterSolucaoVizinha(instancia, solucao, indiceDisciplina, indiceLaboratorio) {
+    let solucaoVizinha = clonarSolucao(solucao);
+    // decrescenta contribuição da alocação que irá sair
+    let disciplina = instancia.disciplinas[indiceDisciplina];
+    let laboratorioAntigo = instancia.laboratorios[solucao.alocacoes[indiceDisciplina]];
+    solucaoVizinha.qualidade -= obterValorAvaliacao(laboratorioAntigo, disciplina, instancia.pesoRecurso, instancia.pesoAlunos);
+
+    // troca de laboratórios
+    solucaoVizinha.usoLaboratorios[solucao.alocacoes[indiceDisciplina]]--;
+    solucaoVizinha.alocacoes[indiceDisciplina] = indiceLaboratorio;
+    solucaoVizinha.usoLaboratorios[indiceLaboratorio]++;
+
+    // acrescenta contribuição da nova alocação
+    let laboratorioNovo = instancia.laboratorios[indiceLaboratorio];
+    solucaoVizinha.qualidade += obterValorAvaliacao(laboratorioNovo, disciplina, instancia.pesoRecurso, instancia.pesoAlunos);
+
+    return solucaoVizinha;
 }
