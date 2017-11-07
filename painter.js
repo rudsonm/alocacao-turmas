@@ -168,14 +168,14 @@ class Canvas {
         // Configuração para laboratório
         this.laboratorios = [];
         this.maximoLaboratorioPorLinha = 6;
-        this.totalLaboratorios = (typeof(laboratorios) == 'object') ? laboratorios.length : laboratorios;
+        this.totalLaboratorios = laboratorios.length;
         this.espacoLaboratorio = this.elemento.width / this.totalLaboratorios;
         this.yLaboratorio = 20;
 
         // Configuração para disciplina
         this.disciplinas = [];
         this.maximoDisciplinaPorLinha = 10;
-        this.totalDisciplinas = (typeof(disciplinas) == 'object') ? disciplinas.length : disciplinas;
+        this.totalDisciplinas = disciplinas.length;
         this.espacoDisciplina = this.elemento.width / this.maximoDisciplinaPorLinha;
         this.yDisciplina = 290;
         this.corDisciplina = "#bdc3c7";
@@ -200,22 +200,19 @@ class Canvas {
         this.obterPosicaoPonto = obterPosicaoPonto;
         this.desenharGrafico = desenharGrafico;        
         this.adicionarPonto = adicionarPonto;
+
+        for(let disciplina of disciplinas)
+            this.criarDisciplina(disciplina);
+        
+        for(let laboratorio of laboratorios)
+            this.criarLaboratorio(laboratorio);
     }
 }
 
-var canvas = new Canvas('canvas', disciplinas, laboratorios);
-
-for(let disciplina of disciplinas)
-    canvas.criarDisciplina(disciplina);
-
-for(let laboratorio of laboratorios)
-    canvas.criarLaboratorio(laboratorio);
-
-
-var solucao = buscaConstrutiva(instancia);
-alert(solucao.qualidade);
+// var solucao = buscaConstrutiva(instancia);
+// alert(solucao.qualidade);
 // var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
 
-var solucaoIterada = buscaIterada(instancia, solucao, canvas);
+// var solucaoIterada = buscaIterada(instancia, solucao, canvas);
 
 // var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);

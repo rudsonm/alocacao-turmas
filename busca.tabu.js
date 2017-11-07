@@ -1,4 +1,4 @@
-function buscaTabu(instancia, solucao, maxIt = 16, painter) {
+function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTermino = alert) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
     let maximoConfigTabu = 5;
     let pesoRecurso = instancia.pesoRecurso;
@@ -64,9 +64,8 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter) {
 
         if(++it === maxIt) {
             clearInterval(interval);
-            alert(melhorSolucao.qualidade);
+            funcaoTermino(solucao.qualidade);
             return melhorSolucao;
         }
-    }, 100);
-    return melhorSolucao;
+    }, velocidade);    
 }

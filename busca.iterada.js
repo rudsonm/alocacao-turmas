@@ -1,4 +1,4 @@
-function buscaIterada(instancia, solucao, painter, taxaPerturbacao = 0.5, maxIt = 100) {
+function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, funcaoTermino = alert, taxaPerturbacao = 0.5) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
     let solucaoAtual = clonarSolucao(solucao);
     let it = 0;
@@ -38,8 +38,8 @@ function buscaIterada(instancia, solucao, painter, taxaPerturbacao = 0.5, maxIt 
         
         if(it++ === maxIt) {
             clearInterval(interval);
-            imprimirSolucao(solucao);
+            funcaoTermino(solucao.qualidade);
             return solucao;
         }
-    }, 250);
+    }, velocidade);
 }
