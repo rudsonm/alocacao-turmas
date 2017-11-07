@@ -11,14 +11,15 @@ function escrever(texto, x, y, fontSize = 25) {
 function criarLaboratorio(laboratorio) {
 	let tamanhoRetangulo = this.obterTamanhoRetangulo(laboratorio.alunos);
     let x = (this.laboratorios.length % this.maximoLaboratorioPorLinha) * this.espacoLaboratorio;
-    // x += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
-    x += this.espacoLaboratorio / 2;
+    // x += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;    
 
     let y = this.yLaboratorio;
     y += this.espacoLaboratorio * Math.floor(this.laboratorios.length / this.maximoLaboratorioPorLinha);
-    this.escrever(laboratorio.nome, x, y + 10);
+    this.escrever(laboratorio.nome, x + 10, y + 10);
     y += this.espacoLaboratorio / 2;
     // y += Math.abs(this.espacoLaboratorio - tamanhoRetangulo) / 2;
+
+    x += this.espacoLaboratorio / 2;
 
     let height = tamanhoRetangulo;
     let width = tamanhoRetangulo;
