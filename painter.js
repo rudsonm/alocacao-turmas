@@ -216,6 +216,6 @@ var solucao = buscaConstrutiva(instancia);
 alert(solucao.qualidade);
 // var solucaoAleatoria = caminhadaAleatoria(instancia, null, canvas);
 
-// var solucaoIterada = buscaIterada(instancia, solucao, canvas);
+var solucaoIterada = buscaIterada(instancia, solucao, canvas);
 
 var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
