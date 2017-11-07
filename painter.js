@@ -218,4 +218,4 @@ alert(solucao.qualidade);
 
 var solucaoIterada = buscaIterada(instancia, solucao, canvas);
 
-var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
+// var solucaoTabu = buscaTabu(instancia, solucao, 50, canvas);
