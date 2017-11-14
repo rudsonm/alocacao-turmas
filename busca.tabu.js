@@ -1,6 +1,6 @@
 function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTermino = alert) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
-    let maximoConfigTabu = 5;
+    let maximoConfigTabu = instancia.disciplinas * 0.3;
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
 
@@ -9,6 +9,7 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTe
 
     let tabus = [];
     let it = 0;
+    let melhorIt = 0;
     let interval = setInterval(function() {
         painter.desenharSolucao(solucaoAtual.alocacoes);
         painter.adicionarPonto(solucaoAtual.qualidade);
@@ -52,8 +53,10 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTe
                 if (solucaoVizinha.qualidade < proximaSolucao.qualidade)
                     proximaSolucao = clonarSolucao(solucaoVizinha);
 
-                if (solucaoVizinha.qualidade < melhorSolucao.qualidade)
+                if (solucaoVizinha.qualidade < melhorSolucao.qualidade) {
                     melhorSolucao = clonarSolucao(solucaoVizinha);
+                    melhorIt = it;
+                }
             }
         }
         solucaoAtual = clonarSolucao(proximaSolucao);
@@ -64,7 +67,7 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTe
 
         if(++it === maxIt) {
             clearInterval(interval);
-            funcaoTermino(solucao.qualidade);
+            funcaoTermino(solucao.qualidade + " " + melhorIt);
             return melhorSolucao;
         }
     }, velocidade);    

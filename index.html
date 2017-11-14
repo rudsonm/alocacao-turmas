@@ -63,6 +63,9 @@
                 case "TABU":
                     return buscaTabu(instancia, null, config.iteracoes, canvas, config.velocidade, mostrarQualidade);
                 break;
+                case "RANDOM_WALKER":
+                    return caminhadaAleatoria(instancia, null, canvas, config.velocidade, mostrarQualidade);
+                break;
                 case "C_ITERADA":
                     solucao = buscaConstrutiva(instancia);
                     return buscaIterada(instancia, solucao, config.iteracoes, canvas, config.velocidade, mostrarQualidade);
@@ -70,6 +73,10 @@
                 case "C_TABU":
                     solucao = buscaConstrutiva(instancia);
                     return buscaTabu(instancia, solucao, config.iteracoes, canvas, config.velocidade, mostrarQualidade);
+                break;
+                case "C_RANDOM_WALKER":
+                    solucao = buscaConstrutiva(instancia);
+                    return caminhadaAleatoria(instancia, solucao, canvas, config.velocidade, mostrarQualidade);
                 break;
             }
         }
@@ -87,7 +94,7 @@
             document.getElementsByClassName("painel")[0].style.display = "none";
 
             let canvas = new Canvas("canvas", disciplinas, laboratorios);
-            let solucao = resolver(configuracao, canvas, mostrarQualidade);
+            let solucao = resolver(configuracao, canvas, mostrarQualidade);            
         }
     </script>
 </head>
@@ -117,8 +124,10 @@
             <select name="heuristica" id="heuristica">
                 <option value="ITERADA">Iterada</option>
                 <option value="TABU">Tabu</option>
+                <option value="RANDOM_WALKER">Random Walker</option>
                 <option value="C_ITERADA">Construtiva + Iterada</option>
                 <option value="C_TABU">Construtiva + Tabu</option>
+                <option value="C_RANDOM_WALKER">Construtiva + Random Walker</option>
             </select>
         </div>
         <div class="acoes">

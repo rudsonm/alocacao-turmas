@@ -2,7 +2,7 @@ function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, func
     solucao = solucao || obterSolucaoAleatoria(instancia);
     let solucaoAtual = clonarSolucao(solucao);
     let it = 0;
-
+    let melhorIt = 0;
     let interval = setInterval(function() {
         painter.desenharSolucao(solucaoAtual.alocacoes);
         painter.adicionarPonto(solucaoAtual.qualidade);
@@ -17,6 +17,7 @@ function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, func
                 if(solucaoVizinha.qualidade < proximaSolucao.qualidade) {
                     proximaSolucao = clonarSolucao(solucaoVizinha);                    
                     if(solucaoVizinha.qualidade < solucao.qualidade) {
+                        melhorIt = it;
                         solucao = clonarSolucao(solucaoVizinha);
                     }
                 }
@@ -38,7 +39,7 @@ function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, func
         
         if(it++ === maxIt) {
             clearInterval(interval);
-            funcaoTermino(solucao.qualidade);
+            funcaoTermino(solucao.qualidade + " " + melhorIt);
             return solucao;
         }
     }, velocidade);

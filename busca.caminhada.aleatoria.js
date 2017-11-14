@@ -1,14 +1,15 @@
-function caminhadaAleatoria(instancia, solucao, painter, velocidade = 1) {
+function caminhadaAleatoria(instancia, solucao, painter, velocidade, funcaoTermino = alert) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
 
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
 
     let melhores;
+    let it = 0;
     let interval = setInterval(function() {
         painter.desenharSolucao(solucao.alocacoes);
         painter.adicionarPonto(solucao.qualidade);
-        
+        it++;
         melhores = new Array();
         for(let i = 0; i < instancia.disciplinas.length; i++) {            
             for(let j = 0; j < instancia.laboratorios.length; j++) {
@@ -43,8 +44,8 @@ function caminhadaAleatoria(instancia, solucao, painter, velocidade = 1) {
             solucao = clonarSolucao(melhores[proximaSolucao]);
         } else {
             clearInterval(interval);
-            imprimirSolucao(solucao);
+            funcaoTermino(solucao.qualidade + " " + it);
             return solucao;
         }
-    }, 500 * velocidade);
+    }, velocidade);
 }
