@@ -1,6 +1,6 @@
 function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTermino = alert) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
-    let maximoConfigTabu = instancia.disciplinas * 0.3;
+    let maximoConfigTabu = instancia.disciplinas.length * 0.25;
     let pesoRecurso = instancia.pesoRecurso;
     let pesoAluno = instancia.pesoAlunos;
 
@@ -17,14 +17,10 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTe
         let proximaSolucao = { qualidade: Infinity };
         let menorQualidade = Infinity;
         let novoTabu;
-        // possíveis estratégias:
-        // para cada disciplina ja alocada, trocar de laboratório com as outras disciplinas?
-        // para cada laboratório selecionar a disciplina que melhor se encaixa?
 
-        // atual: aloca cada disciplina em todos os laboratorios disponíveis
         for (let i = 0; i < instancia.disciplinas.length; i++) {
             for (let j = 0; j < instancia.laboratorios.length; j++) {
-                if (tabus.some(t => t === i) // verifica se configuração está na lista de tabus
+                if (tabus.some(t => t[0] === i && t[1] === j) // verifica se configuração está na lista de tabus
                     || j === solucaoAtual.alocacoes[i] // caso disciplina já esteja alocada no laboratório j
                     || solucaoAtual.usoLaboratorios[j] === instancia.aulasPorSemana) // laboratório ocupado todos os dias
                     continue;
@@ -46,25 +42,25 @@ function buscaTabu(instancia, solucao, maxIt = 16, painter, velocidade, funcaoTe
                 solucaoVizinha.qualidade += qualidade;
 
                 if (qualidade < menorQualidade) {
-                    novoTabu = i;
+                    novoTabu = [i, j];
                     menorQualidade = qualidade;
                 }
 
-                if (solucaoVizinha.qualidade < proximaSolucao.qualidade)
+                if (solucaoVizinha.qualidade < proximaSolucao.qualidade) {
                     proximaSolucao = clonarSolucao(solucaoVizinha);
 
-                if (solucaoVizinha.qualidade < melhorSolucao.qualidade) {
-                    melhorSolucao = clonarSolucao(solucaoVizinha);
-                    melhorIt = it;
-                }
+                    if (solucaoVizinha.qualidade < melhorSolucao.qualidade) {
+                        melhorSolucao = clonarSolucao(solucaoVizinha);
+                        melhorIt = it;
+                    }
+                }                
             }
         }
         solucaoAtual = clonarSolucao(proximaSolucao);
 
         tabus.unshift(novoTabu);
         if (tabus.length > maximoConfigTabu)
-            tabus.pop();
-
+            tabus.pop();        
         if(++it === maxIt) {
             clearInterval(interval);
             funcaoTermino(solucao.qualidade + " " + melhorIt);

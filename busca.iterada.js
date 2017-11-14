@@ -1,4 +1,4 @@
-function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, funcaoTermino = alert, taxaPerturbacao = 0.5) {
+function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, funcaoTermino = alert, taxaPerturbacao = 0.25) {
     solucao = solucao || obterSolucaoAleatoria(instancia);
     let solucaoAtual = clonarSolucao(solucao);
     let it = 0;
@@ -24,7 +24,7 @@ function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, func
             }
         }
 
-        if(proximaSolucao.qualidade >= solucaoAtual.qualidade) {
+        if(proximaSolucao.qualidade <= solucaoAtual.qualidade) {
             let disciplinasPerturbadas = instancia.disciplinas.length * taxaPerturbacao;
             for(let i = 0; i < disciplinasPerturbadas; i++) {
                 let disciplina = Math.round(Math.random() * (instancia.disciplinas.length - 1));
@@ -33,7 +33,7 @@ function buscaIterada(instancia, solucao, maxIt = 100, painter, velocidade, func
                     laboratorio = Math.round(Math.random() * (instancia.laboratorios.length - 1));
                 } while(proximaSolucao.usoLaboratorios[laboratorio] >= instancia.aulasPorSemana);
                 proximaSolucao = obterSolucaoVizinha(instancia, proximaSolucao, disciplina, laboratorio);
-            }            
+            }
         }
         solucaoAtual = clonarSolucao(proximaSolucao);
         
